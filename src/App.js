@@ -1,9 +1,12 @@
 import React from 'react';
 import './App.css';
+import dataContexProvider from './context/dataContextProvider'
 
 function App() {
   return (
-    <span>Hello, App!</span>
+    <dataContexProvider>
+      <span>Hello, App!</span>
+    </dataContexProvider>
   );
 }
 
