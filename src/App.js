@@ -1,13 +1,15 @@
 import React from 'react';
 import './App.css';
+import Form from './componentes/Form';
 import Table from './componentes/Table';
-import ContexProvider from './context/ContextProvider';
+import ContextProvider from './context/ContextProvider';
 
 function App() {
   return (
-    <ContexProvider>
+    <ContextProvider>
+      <Form />
       <Table />
-    </ContexProvider>
+    </ContextProvider>
   );
 }
 

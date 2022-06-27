@@ -2,11 +2,13 @@ import React, { useContext } from 'react';
 import Context from '../context/Context';
 
 function Table() {
-  const { data } = useContext(Context);
+  // requisito 1 recibo la informacion de la api por la variable data que viene por el context y la uso en el map
+  const { state } = useContext(Context);
+  // console.log(state);
   // console.log(data);
   return (
 
-    <div>
+    <table>
       <thead>
         <tr>
           <th>Name</th>
@@ -25,7 +27,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        {data.map((elapi) => (
+        {state.map((elapi) => (
           <tr key={ elapi.name }>
             <td>{elapi.name}</td>
             <td>{elapi.rotation_period}</td>
@@ -43,7 +45,7 @@ function Table() {
           </tr>
         ))}
       </tbody>
-    </div>
+    </table>
   );
 }
 
