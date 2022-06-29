@@ -3,10 +3,9 @@ import Context from '../context/Context';
 
 function Form() {
   const [name, setName] = useState('');
-  const { data, setDados, coluna,
-    setState, setFilterByNumericValues, filterByNumericValues,
-    setDadosFiltro, dadosFiltro } = useContext(Context);
-  // const [value, setValue] = useState('0');
+  const { data, setDados,
+    setState, filterByNumericValues,
+    setDadosFiltro, dadosFiltro, setFilterByNumericValues } = useContext(Context);
 
   useEffect(() => {
     const filterPlanet = data.filter((Planets) => Planets.name
@@ -29,9 +28,21 @@ function Form() {
       }), filterPlanet);
     setState(comparacion);
   }, [name, filterByNumericValues]);
+  // requisito 5 array de options para guardar em um estado
+
+  const option = [
+    { value: 'population', select: 'population' },
+    { value: 'orbital_period', select: 'orbital_period' },
+    { value: 'diameter', select: 'diameter' },
+    { value: 'rotation_period', select: 'rotation_period' },
+    { value: 'surface_water', select: 'surface_water' },
+  ];
+  const [options, setOptions] = useState(option);
 
   const handleBotao = () => {
-    setFilterByNumericValues((prev) => [...prev, dadosFiltro]);
+    const { column } = dadosFiltro;
+    console.log(options.filter((item) => item.value !== column));
+    setOptions(options.filter((item) => item.value !== column));
   };
 
   return (
@@ -41,8 +52,6 @@ function Form() {
         Filtrar pelo Nome:
         <input
           value={ name }
-          // O toUpperCase()método converte uma string em letras maiúsculas. O toUpperCase()método não altera a string original.
-          // https://www.w3schools.com/jsref/jsref_touppercase.asp#:~:text=The%20toUpperCase()%20method%20converts,not%20change%20the%20original%20string.
           onChange={ ({ target: { value } }) => setName(value) }
           id="buscar"
           type="text"
@@ -57,12 +66,12 @@ function Form() {
           name="coluna"
           id="coluna"
           onChange={ ({ target }) => {
-            setDadosFiltro((prev) => ({ ...prev, column: target.value }));
+            setDadosFiltro({ ...dadosFiltro, column: target.value });
           } }
         >
-          {coluna.map((column) => (
-            <option key={ column } value={ column }>
-              {column}
+          {options.map((item, index) => (
+            <option key={ index } value={ item.value }>
+              {item.select}
             </option>))}
         </select>
       </label>
@@ -72,8 +81,8 @@ function Form() {
           data-testid="comparison-filter"
           name="operador"
           id="operador"
-          onChange={ ({ target }) => setDadosFiltro((prev) => ({
-            ...prev, comparison: target.value })) }
+          onChange={ ({ target }) => setDadosFiltro({
+            ...dadosFiltro, comparison: target.value }) }
         >
           <option value="maior que">maior que</option>
           <option value="menor que">menor que</option>
@@ -97,7 +106,10 @@ function Form() {
         id="buttonFilter"
         data-testid="button-filter"
         type="button"
-        onClick={ handleBotao }
+        onClick={ () => {
+          setFilterByNumericValues((prev) => [...prev, dadosFiltro]);
+          handleBotao();
+        } }
       >
         Filtrar
       </button>
