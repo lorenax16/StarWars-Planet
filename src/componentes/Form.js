@@ -45,6 +45,16 @@ function Form() {
     setOptions(options.filter((item) => item.value !== column));
   };
 
+  const removeButton = (column) => {
+    const array = filterByNumericValues.filter((item) => item.column !== column);
+    setFilterByNumericValues(array);
+    setOptions([...options, { select: column, value: column }]);
+  };
+
+  const removeFiltro = () => {
+    setFilterByNumericValues([]);
+  };
+
   return (
     <div>
       <form>
@@ -108,15 +118,37 @@ function Form() {
           data-testid="button-filter"
           type="button"
           onClick={ () => {
-            setFilterByNumericValues((prev) => [...prev, dadosFiltro]);
+            setFilterByNumericValues([...filterByNumericValues, dadosFiltro]);
             handleBotao();
           } }
         >
           Filtrar
         </button>
+        <button
+          type="button"
+          data-testid="button-remove-filters"
+          onClick={ removeFiltro }
+        >
+          Remover todas filtragens
+        </button>
       </form>
       <div>
-        <p>ola</p>
+        {
+          filterByNumericValues.map((item) => (
+            <div
+              key={ item.column }
+              data-testid="filter"
+            >
+              {`${item.column} ${item.comparison} ${item.value}`}
+              <button
+                type="button"
+                onClick={ () => removeButton(item.column) }
+              >
+                X
+              </button>
+            </div>
+          ))
+        }
       </div>
     </div>
   );
