@@ -46,74 +46,79 @@ function Form() {
   };
 
   return (
-    <form>
-      <h1>Planetas Star Wars</h1>
-      <label htmlFor="buscar">
-        Filtrar pelo Nome:
-        <input
-          value={ name }
-          onChange={ ({ target: { value } }) => setName(value) }
-          id="buscar"
-          type="text"
-          placeholder="Digite o Nome"
-          data-testid="name-filter"
-        />
-      </label>
-      <label htmlFor="coluna">
-        Coluna
-        <select
-          data-testid="column-filter"
-          name="coluna"
-          id="coluna"
-          onChange={ ({ target }) => {
-            setDadosFiltro({ ...dadosFiltro, column: target.value });
+    <div>
+      <form>
+        <h1>Planetas Star Wars</h1>
+        <label htmlFor="buscar">
+          Filtrar pelo Nome:
+          <input
+            value={ name }
+            onChange={ ({ target: { value } }) => setName(value) }
+            id="buscar"
+            type="text"
+            placeholder="Digite o Nome"
+            data-testid="name-filter"
+          />
+        </label>
+        <label htmlFor="coluna">
+          Coluna
+          <select
+            data-testid="column-filter"
+            name="coluna"
+            id="coluna"
+            onChange={ ({ target }) => {
+              setDadosFiltro({ ...dadosFiltro, column: target.value });
+            } }
+          >
+            {options.map((item, index) => (
+              <option key={ index } value={ item.value }>
+                {item.select}
+              </option>))}
+          </select>
+        </label>
+        <label htmlFor="operador">
+          Operador
+          <select
+            data-testid="comparison-filter"
+            name="operador"
+            id="operador"
+            onChange={ ({ target }) => setDadosFiltro({
+              ...dadosFiltro, comparison: target.value }) }
+          >
+            <option value="maior que">maior que</option>
+            <option value="menor que">menor que</option>
+            <option value="igual a">igual a</option>
+          </select>
+        </label>
+        <label htmlFor="number">
+          Número
+          <input
+            data-testid="value-filter"
+            id="number"
+            name="number"
+            type="number"
+            placeholder="0"
+            onChange={ ({ target }) => setDadosFiltro({
+              ...dadosFiltro, value: target.value }) }
+            value={ dadosFiltro.value }
+          />
+        </label>
+        <button
+          id="buttonFilter"
+          data-testid="button-filter"
+          type="button"
+          onClick={ () => {
+            setFilterByNumericValues((prev) => [...prev, dadosFiltro]);
+            handleBotao();
           } }
         >
-          {options.map((item, index) => (
-            <option key={ index } value={ item.value }>
-              {item.select}
-            </option>))}
-        </select>
-      </label>
-      <label htmlFor="operador">
-        Operador
-        <select
-          data-testid="comparison-filter"
-          name="operador"
-          id="operador"
-          onChange={ ({ target }) => setDadosFiltro({
-            ...dadosFiltro, comparison: target.value }) }
-        >
-          <option value="maior que">maior que</option>
-          <option value="menor que">menor que</option>
-          <option value="igual a">igual a</option>
-        </select>
-      </label>
-      <label htmlFor="number">
-        Número
-        <input
-          data-testid="value-filter"
-          id="number"
-          name="number"
-          type="number"
-          placeholder="0"
-          onChange={ ({ target }) => setDadosFiltro({
-            ...dadosFiltro, value: target.value }) }
-          value={ dadosFiltro.value }
-        />
-      </label>
-      <button
-        id="buttonFilter"
-        data-testid="button-filter"
-        type="button"
-        onClick={ () => {
-          setFilterByNumericValues((prev) => [...prev, dadosFiltro]);
-          handleBotao();
-        } }
-      >
-        Filtrar
-      </button>
-    </form>
+          Filtrar
+        </button>
+      </form>
+      <div>
+        <p>ola</p>
+      </div>
+    </div>
   );
 }
 
