@@ -8,7 +8,7 @@ function ContextProvider({ children }) {
   const [state, setState] = useState([]);
   // const [coluna, setColuna] = useState(['population',
   //   'orbital_period',
-  //   'diameter', 'rotation_period', 'surface_water']);
+  //   'diameter', 'rotation_period', 'surface_water'])
   // const [dadosColuna, setdadosColuna] = useState(['population',
   //   'orbital_period',
   //   'diameter', 'rotation_period', 'surface_water']);
@@ -24,10 +24,19 @@ function ContextProvider({ children }) {
       try {
         const url = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
         const resposta = await url.json();
-        const filtro = resposta.results;
-        setData(filtro);
-        setDados(filtro);
-        setState(filtro);
+        const uno = 1;
+
+        const ordernarNoComeco = resposta.results.sort((a, b) => {
+          if (a.name < b.name) {
+            return -uno;
+          } if (a.name > b.name) {
+            return uno;
+          }
+          return 0;
+        });
+        setData(ordernarNoComeco);
+        setDados(ordernarNoComeco);
+        setState(ordernarNoComeco);
       } catch (error) {
         console.log(error);
       }

@@ -3,7 +3,8 @@ import Context from '../context/Context';
 
 function Form() {
   const [name, setName] = useState('');
-  const { data, setDados,
+  const [sort, setSort] = useState('ASC');
+  const { data, setDados, state,
     setState, filterByNumericValues,
     setDadosFiltro, dadosFiltro, setFilterByNumericValues } = useContext(Context);
 
@@ -41,7 +42,7 @@ function Form() {
 
   const handleBotao = () => {
     const { column } = dadosFiltro;
-    console.log(options.filter((item) => item.value !== column));
+    // console.log(options.filter((item) => item.value !== column));
     setOptions(options.filter((item) => item.value !== column));
   };
 
@@ -53,6 +54,32 @@ function Form() {
 
   const removeFiltro = () => {
     setFilterByNumericValues([]);
+    setOptions(option);
+  };
+
+  const criarOption = (item, index) => (
+    <option key={ index } value={ item.value }>
+      {item.select}
+    </option>);
+  // req 7
+  const handleOrder = () => {
+    const menos = -1;
+    const filtrarLetras = state
+      .sort((a, b) => {
+        if (sort === 'DESC') {
+          if (b[dadosFiltro.column] === 'unknown') return menos;
+          return Number(b[dadosFiltro.column]) - Number(a[dadosFiltro.column]);
+        }
+        if (sort === 'ASC') {
+          if (a[dadosFiltro.column] === 'unknown') return menos;
+          return Number(a[dadosFiltro.column]) - Number(b[dadosFiltro.column]);
+        }
+        return true;
+      });
+
+    const newArray = [...filtrarLetras];
+    console.log(newArray);
+    setState(newArray);
   };
 
   return (
@@ -80,10 +107,7 @@ function Form() {
               setDadosFiltro({ ...dadosFiltro, column: target.value });
             } }
           >
-            {options.map((item, index) => (
-              <option key={ index } value={ item.value }>
-                {item.select}
-              </option>))}
+            {options.map(criarOption)}
           </select>
         </label>
         <label htmlFor="operador">
@@ -131,7 +155,50 @@ function Form() {
         >
           Remover todas filtragens
         </button>
+        <label htmlFor="coluna">
+          Ordenar
+          <select
+            data-testid="column-sort"
+            name="coluna"
+            id="coluna"
+            onChange={ ({ target }) => {
+              setDadosFiltro({ ...dadosFiltro, column: target.value });
+            } }
+          >
+            {option.map(criarOption)}
+          </select>
+        </label>
       </form>
+      {/* requisito 7  */}
+      <label htmlFor="ascendente">
+        Ascendente
+        <input
+          id="ascendente"
+          name="ascendente"
+          value="ASC"
+          type="radio"
+          data-testid="column-sort-input-asc"
+          onChange={ ({ target }) => setSort(target.value) }
+        />
+      </label>
+      <label htmlFor="descendente">
+        Descendente
+        <input
+          id="descendente"
+          name="ascendente"
+          value="DESC"
+          type="radio"
+          data-testid="column-sort-input-desc"
+          onChange={ ({ target }) => setSort(target.value) }
+        />
+      </label>
+      <button
+        type="button"
+        data-testid="column-sort-button"
+        onClick={ handleOrder }
+      >
+        Ordenar
+      </button>
       <div>
         {
           filterByNumericValues.map((item) => (

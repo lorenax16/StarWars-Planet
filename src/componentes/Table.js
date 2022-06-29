@@ -29,7 +29,7 @@ function Table() {
       <tbody>
         {state.map((elapi) => (
           <tr key={ elapi.name }>
-            <td>{elapi.name}</td>
+            <td data-testid="planet-name">{elapi.name}</td>
             <td>{elapi.rotation_period}</td>
             <td>{elapi.orbital_period}</td>
             <td>{elapi.diameter}</td>
